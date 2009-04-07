@@ -46,7 +46,8 @@ function ck_wp_head ()
 function updated_banner()
 {
     $today = date("Y-m-d");
-    $query = "SELECT post_date, id FROM wp_posts WHERE wp_posts.post_date LIKE '".$today."%'";
+    $status = 'publish';
+    $query = "SELECT post_date, id FROM wp_posts WHERE wp_posts.post_modified LIKE '".$today."%' AND wp_posts.post_status='publish'";
     $results = mysql_query($query);
     $num_results = mysql_num_rows($results);
     if ($num_results > 0) {
