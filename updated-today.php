@@ -4,7 +4,7 @@ Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/blog/updated-today-plugin
 Description: This plug-in provides a banner in the upper left corner of the page that says "updated today" if your Wordpress Blog has been updated today.
 Version: 1.6
-Author: <a href="http://www.chriskdesigns.com">Chris Klosowski</a>
+Author: Chris Klosowski
 */
 
 /* ### Configuration Variables ### */
