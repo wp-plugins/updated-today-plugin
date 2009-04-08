@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Updated Today Banner
-Plugin URI: http://www.chriskdesigns.com/updated-today
+Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the upper left corner of the page that says "updated today" if your Wordpress Blog has been updated today.
 Version: 1.6.1
 Author: Chris Klosowski
-Author URI: http://www.chriskdesigns.com
+Author URI: http://www.chriskdesigns.com/
 License: GPL
 */
 

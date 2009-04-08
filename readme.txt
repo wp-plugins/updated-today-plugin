@@ -1,7 +1,7 @@
 === Updated Today ===
 Contributors: Chris Klosowski
 Donate link: http://www.chriskdesigns.com
-Tags: updates, images
+Tags: updates, images, posts
 Requires at least: 2.0.2
 Tested up to: 2.7.1
 Stable tag: 1.6.1
