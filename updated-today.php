@@ -56,7 +56,7 @@ function updated_banner()
         $results_assoc = mysql_fetch_assoc($results);
         $postid = $results_assoc['id'];
 	?>
-	<div id="updated"><img src="<?php bloginfo('url'); ?>/wp-content/plugins/updated-today-plugin/updated.png" border="0" /></div>
+	<div id="updated"><img src="<?php bloginfo('url'); ?>wp-content/plugins/updated-today-plugin/updated.png" border="0" /></div>
 	<?php
     }
 }
