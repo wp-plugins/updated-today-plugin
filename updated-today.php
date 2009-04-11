@@ -3,7 +3,7 @@
 Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the upper left corner of the page that says "updated today" if your Wordpress Blog has been updated today.
-Version: 1.6.1
+Version: 1.8
 Author: Chris Klosowski
 Author URI: http://www.chriskdesigns.com/
 License: GPL
@@ -20,9 +20,7 @@ $conf_use_pngfix = true;
 $banneradded = null;
 
 add_action('wp_head', 'ck_wp_head');
-if (!$conf_manual_placement) {
-    add_action('wp_footer', 'ck_wp_footer');
-}
+add_action('wp_footer', 'ck_wp_footer');
 
 function ck_wp_head ()
 {
@@ -47,9 +45,10 @@ function ck_wp_head ()
 
 function updated_banner()
 {
+    global $table_prefix;
     $today = date("Y-m-d");
     $status = 'publish';
-    $query = "SELECT post_date, id FROM wp_posts WHERE wp_posts.post_modified LIKE '".$today."%' AND wp_posts.post_status='publish'";
+    $query = "SELECT post_date, id FROM ".$table_prefix."posts WHERE (".$table_prefix."posts.post_date LIKE '".$today."%' OR ".$table_prefix."posts.post_modified LIKE '".$today."%') AND ".$table_prefix."posts.post_status='publish'";
     $results = mysql_query($query);
     $num_results = mysql_num_rows($results);
     if ($num_results > 0) {
