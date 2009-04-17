@@ -42,7 +42,7 @@ function updated_banner()
     global $table_prefix;
     $today = date("Y-m-d");
     $status = 'publish';
-    $query = "SELECT post_date, id FROM wp_posts WHERE (".$table_prefix."posts.post_date LIKE '".$today."%' OR ".$table_prefix."posts.post_modified LIKE '".$today."%') AND ".$table_prefix."posts.post_status='publish'";
+    $query = "SELECT post_date, id FROM ".$table_prefix."posts WHERE (".$table_prefix."posts.post_date LIKE '".$today."%' OR ".$table_prefix."posts.post_modified LIKE '".$today."%') AND ".$table_prefix."posts.post_status='publish'";
     $results = mysql_query($query);
     $num_results = mysql_num_rows($results);
     if ($num_results > 0) {
