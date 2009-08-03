@@ -3,7 +3,7 @@
 Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the left or right corner of the page that says "updated today" if your Wordpress Blog has been updated today.
-Version: 2.0
+Version: 2.0.1
 Author: Chris Klosowski
 Author URI: http://www.chriskdesigns.com/
 License: GPL
@@ -33,7 +33,7 @@ function ck_wp_head ()
     global $conf_manual_style, $conf_use_pngfix;
     ?>
     <style type="text/css" media="screen">
-    #updated { clear: both; position: absolute; display: block; top: 0; <?php echo get_option('banner_position');?>: 0; height: <?php echo get_option('banner_height');?>px; width: <?php echo get_option('banner_width');?>px; z-index: 100; } 
+    #updated { clear: both; position: absolute; display: block; top: 0; <?php echo get_option('banner_position');?>: 0; height: 120px; width: 120px; z-index: 100; } 
     #updated img { padding: 0; margin: 0; }</style><?php
     if (get_option('banner_pngfix') == 'true') {
         echo '<!--[if lt IE 7]>
