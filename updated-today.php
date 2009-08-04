@@ -3,7 +3,7 @@
 Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the left or right corner of the page that says "updated today" if your Wordpress Blog has been updated today.
-Version: 2.0.1
+Version: 2.1
 Author: Chris Klosowski
 Author URI: http://www.chriskdesigns.com/
 License: GPL
@@ -33,7 +33,7 @@ function ck_wp_head ()
     global $conf_manual_style, $conf_use_pngfix;
     ?>
     <style type="text/css" media="screen">
-    #updated { clear: both; position: absolute; display: block; top: 0; <?php echo get_option('banner_position');?>: 0; height: 120px; width: 120px; z-index: 100; } 
+    #updated { clear: both; position: absolute; display: block; top: 0; <?php if (!get_option('banner_position')) { echo "left"; } else { echo get_option('banner_position');} ?>: 0; height: 120px; width: 120px; z-index: 100; } 
     #updated img { padding: 0; margin: 0; }</style><?php
     if (get_option('banner_pngfix') == 'true') {
         echo '<!--[if lt IE 7]>
@@ -51,7 +51,7 @@ function updated_banner()
    if ( $results = $wpdb->get_results($query) ) {
         $postid = $results[0]->id;
 	?>
-	<div id="updated"><img src="<?php bloginfo('url'); ?>/wp-content/plugins/updated-today-plugin/banners/<?php echo get_option('banner_image');?>" border="0" /></div>
+	<div id="updated"><img src="<?php if (!get_option('banner_image')) { bloginfo('url'); ?>/wp-content/plugins/updated-today-plugin/banners/updated.png<?php } else { bloginfo('url'); ?>/wp-content/plugins/updated-today-plugin/banners/<?php echo get_option('banner_image'); }?>" border="0" /></div>
 	<?php
     }
 }
@@ -83,6 +83,23 @@ function updated_menu_options() {
 <tr valign="top">
 <th scope="row">Images</th>
 <td><?php
+
+// Defines scandir() if using PHP 4.x thanks to http://abeautifulsite.net/notebook/59
+
+if( !function_exists('scandir') ) {
+    function scandir($directory, $sorting_order = 0) {
+        $dh  = opendir($directory);
+        while( false !== ($filename = readdir($dh)) ) {
+            $files[] = $filename;
+        }
+        if( $sorting_order == 0 ) {
+            sort($files);
+        } else {
+            rsort($files);
+        }
+        return($files);
+    }
+}
 
 $dirname = getcwd()."/../wp-content/plugins/updated-today-plugin/banners/";
 $images = scandir($dirname);
