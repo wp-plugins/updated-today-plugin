@@ -1,7 +1,7 @@
 === Updated Today Banner === 
 Contributors: cklosows 
 Tags: css, posts, updates, banner
-Stable tag: 2.1.1
+Stable tag: 2.2.1
 Requires at least: 2.7.1
 Tested up to: 2.9.2
 Donate link: http://www.chriskdesigns.com/updated-today
