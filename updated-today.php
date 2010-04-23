@@ -3,7 +3,7 @@
 Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the left or right corner of the page that says "updated today" if your Wordpress Blog has been updated today.
-Version: 2.2
+Version: 2.2.1
 Author: Chris Klosowski
 Author URI: http://www.chriskdesigns.com/
 License: GPL
@@ -106,7 +106,7 @@ function updated_menu_options() {
 
 <tr valign="top">
 <th scope="row">Insert into:<br /><span style="font-size: x-small;">Changing this can help display issues on some themes</span></th>
-<td><input type="radio" name="banner_hook_option" value="header" <?php if (get_option('banner_hook_option') == 'header') {?>checked="checked"<?php;}?> /> Header<br /><input type="radio" name="banner_hook_option" value="footer" <?php if (get_option('banner_hook_option') == 'footer') {?>checked="checked"<?php;}?> /> Footer</td>
+<td><input type="radio" name="banner_hook_option" value="header" <?php if (get_option('banner_hook_option') == 'header') {?>checked="checked"<?php;}?> /> Header<br /><input type="radio" name="banner_hook_option" value="footer" <?php if (get_option('banner_hook_option') == 'footer') {?>checked="checked"<?php;}?> /> Footer <em>(Recommended)</em><br />Note: This <strong>does not</strong> place the banner at bottom of your page if you select 'Footer'. It is simply where, in the WordPress code, the plugin is executed. Choosing 'Header' can correct display issues but 'Footer' is recommended as it can allow for primary content to load slightly faster.</td>
 </tr>
  
 <tr valign="top">
