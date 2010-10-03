@@ -3,31 +3,24 @@
 Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the left or right corner of the page that says "updated today" if your Wordpress Blog has been updated today.
-Version: 2.2.1
+Version: 2.3
 Author: Chris Klosowski
 Author URI: http://www.chriskdesigns.com/
 License: GPL
 */
 
-/* ### Configuration Variables ### */
-
-$conf_manual_placement = false;
-$conf_manual_style = false;
-$conf_use_pngfix = true;
-
-/* ### End Configuration Variables ### */
-
-$banneradded = null;
-
-add_action('wp_head', 'ck_wp_head');
-add_action('wp_footer', 'ck_wp_footer');
+// Setup the hooks
 if ( is_admin() ) { //Adds admin verification
-add_action('admin_menu', 'updated_menu');
-add_action('admin_init', 'register_updated_settings');
-} else {
-	// non-admin enqueues, actions, and filters
+	add_action('admin_menu', 'updated_menu');
+	add_action('admin_init', 'register_updated_settings');
+	register_deactivation_hook('updated-today-plugin/updated-today.php', 'de_register_settings_ut');
+	register_activation_hook('updated-today-plugin/updated-today.php', 'pre_register_settings_ut');
+} else { // Non admin hooks
+	add_action('wp_head', 'ck_wp_head');
+	add_action('wp_footer', 'ck_wp_footer');
 }
 
+// The Business Functions
 function ck_wp_head ()
 {
     global $conf_manual_style, $conf_use_pngfix;
@@ -41,6 +34,14 @@ function ck_wp_head ()
 <![endif]-->';
     }
    	if (get_option('banner_hook_option') == 'header') {
+		updated_banner();
+	}
+}
+
+
+function ck_wp_footer ()
+{
+	if (get_option('banner_hook_option') == 'footer') {
 		updated_banner();
 	}
 }
@@ -76,6 +77,8 @@ function updated_banner()
     }
 }
 
+
+// Admin Menu functions
 function updated_menu() {
   add_options_page('Updated Today', 'Updated Today', 8, 'updated-today-plugin', 'updated_menu_options');
 }
@@ -162,7 +165,8 @@ if(file_is_displayable_image($dirname.$curimg)) {
 
 }
 
-function register_updated_settings() { // whitelist options
+// Setting Registrations
+function register_updated_settings() { // Whitelist options
   register_setting( 'updated-options', 'banner_position' );
   register_setting( 'updated-options', 'banner_pngfix' );
   register_setting( 'updated-options', 'banner_image' );
@@ -171,14 +175,27 @@ function register_updated_settings() { // whitelist options
   register_setting( 'updated-options', 'alert_on_modified' );
   register_setting( 'updated-options', 'alert_on_published' );
   register_setting( 'updated-options', 'banner_hook_option' );
-
 }
 
+function pre_register_settings_ut() { // Upon Activation set defaults
+  update_option( 'banner_position', 'left' );
+  update_option( 'banner_pngfix', 'false' );
+  update_option( 'banner_image', 'updated.png' );
+  update_option( 'alert_on_post', 'post' );
+  update_option( 'alert_on_page', '' );
+  update_option( 'alert_on_modified', '' );
+  update_option( 'alert_on_published', 'published' );
+  update_option( 'banner_hook_option', 'footer' );
+}
 
-function ck_wp_footer ()
-{
-	if (get_option('banner_hook_option') == 'footer') {
-		updated_banner();
-	}
+function de_register_settings_ut() { // Delete options from db on deactivate
+  delete_option( 'banner_position' );
+  delete_option( 'banner_pngfix' );
+  delete_option( 'banner_image' );
+  delete_option( 'alert_on_post' );
+  delete_option( 'alert_on_page' );
+  delete_option( 'alert_on_modified' );
+  delete_option( 'alert_on_published' );
+  delete_option( 'banner_hook_option' );
 }
 ?>
