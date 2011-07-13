@@ -1,10 +1,10 @@
 === Updated Today Banner === 
 Contributors: cklosows 
 Tags: css, posts, updates, banner
-Stable tag: 2.3
+Stable tag: 2.4
 Requires at least: 2.7.1
-Tested up to: 3.0.1
-Donate link: http://www.chriskdesigns.com/updated-today
+Tested up to: 3.2.1
+Donate link: http://www.chriskdesigns.com/plugins/updated-today
  
 Displays a banner graphic on your site whenever you publish or update a post or page on your blog.
 
@@ -17,6 +17,11 @@ Displays a banner graphic on your site whenever you publish or update a post or 
 If you have questions please leave them in the comments at the <a href="http://www.chriskdesigns.com/plugins/updated-today" target="_blank">plugin homepage</a>.
 
 == Changelog ==
+–Version 2.4–
+Added an option to make the image a link to the most recent post
+Cleaned up the options to a single Datbase Entry to require less calls to
+the get_option function. This also imports your old settings automatically.
+
 –Version 2.3–
 Cleaning a little house from old settings and code.
 Plugin now sets defaults upon activation and removes settings from the options table when deactivated.
