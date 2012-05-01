@@ -1,7 +1,7 @@
 === Updated Today Banner === 
 Contributors: cklosows 
 Tags: css, posts, updates, banner
-Stable tag: 2.5
+Stable tag: 2.5.1
 Requires at least: 2.7.1
 Tested up to: 3.3.2
 Donate link: http://www.chriskdesigns.com/plugins/updated-today
@@ -17,7 +17,10 @@ Displays a banner graphic on your site whenever you publish or update a post or 
 If you have questions please leave them in the comments at the <a href="http://www.chriskdesigns.com/plugins/updated-today" target="_blank">plugin homepage</a>.
 
 == Changelog ==
-–Version 2.4–
+–Version 2.5.1–
+Fix for mistaken Short Tags issues, my bad guys (Thanks to Scott Grayban of https://www.borgnet.net for the find/fix and working with me on it)
+
+–Version 2.5–
 Moved CSS into wp_enqueue_style
 Moved pngfix.js into wp_enqueue_script
 Added ability to upload images
