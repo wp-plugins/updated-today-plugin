@@ -3,7 +3,7 @@ Contributors: cklosows
 Tags: css, posts, updates, banner
 Stable tag: 2.5.2
 Requires at least: 2.7.1
-Tested up to: .3.4.2
+Tested up to: 3.4.2
 Donate link: http://www.chriskdesigns.com/plugins/updated-today
  
 Displays a banner graphic on your site whenever you publish or update a post or page on your blog.
