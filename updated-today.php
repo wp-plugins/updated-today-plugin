@@ -3,13 +3,13 @@
 Plugin Name: Updated Today Banner
 Plugin URI: http://www.chriskdesigns.com/updated-today/
 Description: This plug-in provides a banner in the left or right corner of the page that says "updated today" if your Wordpress Blog has been updated today.
-Version: 2.5.2
+Version: 2.5.3
 Author: Chris Klosowski
 Author URI: http://www.chriskdesigns.com/
 License: GPLv2 or later
 */
 
-define( 'UT_VERSION', '2.5.2' );
+define( 'UT_VERSION', '2.5.3' );
 
 // Setup the hooks
 if ( is_admin() ) {
@@ -21,15 +21,19 @@ if ( is_admin() ) {
 	register_activation_hook( 'updated-today-plugin/updated-today.php', 'pre_register_settings_ut' );
 } else {
 	// Non admin hooks
-	wp_enqueue_style( 'ck_updated_today_css',  plugins_url().'/updated-today-plugin/styles.css', NULL, UT_VERSION, 'all' );
+	add_action( 'init', 'ck_enqueue_css' );
 	add_action( 'wp_head', 'ck_wp_head', 1 );
 	add_action( 'wp_footer', 'ck_wp_footer', 1 );
 }
 
 // The Business Functions
+function ck_enqueue_css() {
+	wp_enqueue_style( 'ck_updated_today_css',  plugins_url().'/updated-today-plugin/styles.css', NULL, UT_VERSION, 'all' );
+}
+
 function ck_wp_head() {
 	$options = get_option( 'updated_today_options' );
-	if ( $options['banner_pngfix'] == 'true' ) {
+	if ( isset( $options['banner_pngfix'] ) && $options['banner_pngfix'] == 'true' ) {
 		wp_enqueue_script( 'ck_updated_today_pngfix', plugins_url().'/updated-today-plugin/pngfix.js', NULL, UT_VERSION, TRUE );
 	}
 	if ( $options['banner_hook_option'] == 'header' ) {
@@ -48,25 +52,38 @@ function ck_wp_footer() {
 function updated_banner() {
 	global $table_prefix, $wpdb;
 	$options = get_option( 'updated_today_options' );
+	extract( $options, EXTR_SKIP );
+	$alert_on_published = ( isset( $alert_on_published ) ) ? $alert_on_published : false;
+	$alert_on_modified = ( isset( $alert_on_modified ) ) ? $alert_on_modified : false;
+
+	$alert_on_post = ( isset( $alert_on_post ) ) ? $alert_on_post : false;
+	$alert_on_page = ( isset( $alert_on_page ) ) ? $alert_on_page : false;
+
 	$today = date_i18n( "Y-m-d" );
-	if ( $options['alert_on_published'] && $options['alert_on_modified'] ) {
+	if ( $alert_on_published && $alert_on_modified ) {
 		$status = "(".$table_prefix."posts.post_date LIKE '".$today."%' OR ".$table_prefix."posts.post_modified LIKE '".$today."%')";
 	}
-	if ( $options['alert_on_published'] && !$options['alert_on_modified'] ) {
+
+	if ( $alert_on_published && !$alert_on_modified ) {
 		$status = "".$table_prefix."posts.post_date LIKE '".$today."%'";
 	}
-	if ( $options['alert_on_modified'] && !$options['alert_on_published'] ) {
+
+	if ( $alert_on_modified && !$alert_on_published ) {
 		$status = "".$table_prefix."posts.post_modified LIKE '".$today."%'";
 	}
-	if ( $options['alert_on_post'] && $options['alert_on_page'] ) {
+
+	if ( $alert_on_post && $alert_on_page ) {
 		$type = "(".$table_prefix."posts.post_type='post' OR ".$table_prefix."posts.post_type='page')";
 	}
-	if ( $options['alert_on_post'] && !$options['alert_on_page'] ) {
+
+	if ( $alert_on_post && !$alert_on_page ) {
 		$type = "".$table_prefix."posts.post_type='post'";
 	}
-	if ( $options['alert_on_page'] && !$options['alert_on_post'] ) {
+
+	if ( $alert_on_page && !$alert_on_post ) {
 		$type = "".$table_prefix."posts.post_type='page'";
 	}
+
 	$query = "SELECT post_date, id FROM ".$table_prefix."posts WHERE ".$status." AND ".$table_prefix."posts.post_status='publish' AND ".$type."";
 	if ( $results = $wpdb->get_results( $query ) ) {
 		$postid = $results[0]->id;
@@ -106,7 +123,17 @@ function updated_menu() {
 }
 
 function updated_menu_options() {
-	$current = get_option( 'updated_today_options' );
+	$options = get_option( 'updated_today_options' );
+	extract( $options, EXTR_SKIP );
+	$alert_on_published = ( isset( $alert_on_published ) ) ? $alert_on_published : false;
+	$alert_on_modified = ( isset( $alert_on_modified ) ) ? $alert_on_modified : false;
+
+	$alert_on_post = ( isset( $alert_on_post ) ) ? $alert_on_post : false;
+	$alert_on_page = ( isset( $alert_on_page ) ) ? $alert_on_page : false;
+
+	$banner_pngfix = ( isset( $banner_pngfix ) ) ? $banner_pngfix : false;
+	$link_banner   = ( isset( $link_banner ) )   ? $link_banner   : false;
+
 	if ( isset( $_POST['Upload'] ) && $_POST['Upload'] == 'Upload File' ) {
 		$upload_dir = plugin_dir_path( __FILE__ ).'banners/';
 		if ( $_FILES['new_banner']['error'] == UPLOAD_ERR_OK && strpos( $_FILES['new_banner']['type'], 'image' ) !== FALSE ) {
@@ -147,31 +174,31 @@ function updated_menu_options() {
 	  <table class="form-table">
 		<tr valign="top">
 		  <th scope="row">Position:</th>
-		  <td><input type="radio" name="updated_today_options[banner_position]" value="left" <?php if ( $current['banner_position'] == 'left' ) { ?>checked="checked"<?php } ?> /> Left<br /><input type="radio" name="updated_today_options[banner_position]" value="right" <?php if ( $current['banner_position'] == 'right' ) { ?>checked="checked"<?php } ?> /> Right</td>
+		  <td><input type="radio" name="updated_today_options[banner_position]" value="left" <?php if ( $banner_position == 'left' ) { ?>checked="checked"<?php } ?> /> Left<br /><input type="radio" name="updated_today_options[banner_position]" value="right" <?php if ( $banner_position == 'right' ) { ?>checked="checked"<?php } ?> /> Right</td>
 		</tr>
 
 		<tr valign="top">
 		  <th scope="row">Check:<br /><span style="font-size: x-small;">What would you like to notify visitors of?</span></th>
-		  <td><input type="checkbox" name="updated_today_options[alert_on_post]" value="post" <?php if ( $current['alert_on_post'] == 'post' ) { ?>checked="checked"<?php } ?> /> Posts<br />
-		  <input type="checkbox" name="updated_today_options[alert_on_page]" value="page" <?php if ( $current['alert_on_page'] == 'page' ) { ?>checked="checked"<?php } ?> /> Pages <br />for...<br />
-		  <input type="checkbox" name="updated_today_options[alert_on_published]" value="published" <?php if ( $current['alert_on_published'] == 'published' ) { ?>checked="checked"<?php } ?> /> Published date<br />
-		  <input type="checkbox" name="updated_today_options[alert_on_modified]" value="modified" <?php if ( $current['alert_on_modified'] == 'modified' ) { ?>checked="checked"<?php } ?> /> Modified date
+		  <td><input type="checkbox" name="updated_today_options[alert_on_post]" value="post" <?php if ( $alert_on_post == 'post' ) { ?>checked="checked"<?php } ?> /> Posts<br />
+		  <input type="checkbox" name="updated_today_options[alert_on_page]" value="page" <?php if ( $alert_on_page == 'page' ) { ?>checked="checked"<?php } ?> /> Pages <br />for...<br />
+		  <input type="checkbox" name="updated_today_options[alert_on_published]" value="published" <?php if ( $alert_on_published == 'published' ) { ?>checked="checked"<?php } ?> /> Published date<br />
+		  <input type="checkbox" name="updated_today_options[alert_on_modified]" value="modified" <?php if ( $alert_on_modified == 'modified' ) { ?>checked="checked"<?php } ?> /> Modified date
 		  </td>
 		</tr>
 
 		<tr valign="top">
 		  <th scope="row">Insert into:<br /><span style="font-size: x-small;">Changing this can help display issues on some themes</span></th>
-		  <td><input type="radio" name="updated_today_options[banner_hook_option]" value="header" <?php if ( $current['banner_hook_option'] == 'header' ) { ?>checked="checked"<?php } ?> /> Header<br /><input type="radio" name="updated_today_options[banner_hook_option]" value="footer" <?php if ( $current['banner_hook_option'] == 'footer' ) { ?>checked="checked"<?php } ?> /> Footer <em>(Recommended)</em><br />Note: This <strong>does not</strong> place the banner at bottom of your page if you select 'Footer'. It is simply where, in the WordPress code, the plugin is executed. Choosing 'Header' can correct display issues but 'Footer' is recommended as it can allow for primary content to load slightly faster.</td>
+		  <td><input type="radio" name="updated_today_options[banner_hook_option]" value="header" <?php if ( $banner_hook_option == 'header' ) { ?>checked="checked"<?php } ?> /> Header<br /><input type="radio" name="updated_today_options[banner_hook_option]" value="footer" <?php if ( $banner_hook_option == 'footer' ) { ?>checked="checked"<?php } ?> /> Footer <em>(Recommended)</em><br />Note: This <strong>does not</strong> place the banner at bottom of your page if you select 'Footer'. It is simply where, in the WordPress code, the plugin is executed. Choosing 'Header' can correct display issues but 'Footer' is recommended as it can allow for primary content to load slightly faster.</td>
 		</tr>
 
 		<tr valign="top">
 		  <th scope="row">Link Image to Post:<br /><span style="font-size: x-small;">This will create an anchor tag to the post updated</span></th>
-		  <td><input type="checkbox" name="updated_today_options[link_banner]" value="true" <?php if ( $current['link_banner'] == 'true' ) { ?>checked="checked"<?php } ?> /></td>
+		  <td><input type="checkbox" name="updated_today_options[link_banner]" value="true" <?php if ( $link_banner == 'true' ) { ?>checked="checked"<?php } ?> /></td>
 		</tr>
 
 		<tr valign="top">
 		  <th scope="row">Use PNGFix:<br /><span style="font-size: x-small;">Fixes transparent .png files for use with Internet Explorer 6.0</span></th>
-		  <td><input type="checkbox" name="updated_today_options[banner_pngfix]" value="true" <?php if ( $current['banner_pngfix'] == 'true' ) { ?>checked="checked"<?php } ?> /></td>
+		  <td><input type="checkbox" name="updated_today_options[banner_pngfix]" value="true" <?php if ( $banner_pngfix == 'true' ) { ?>checked="checked"<?php } ?> /></td>
 		</tr>
 
 		<tr valign="top">
@@ -182,7 +209,7 @@ function updated_menu_options() {
 	$images = scandir( $dirname );
 	foreach ( $images as $curimg ) {
 		if ( file_is_displayable_image( $dirname.$curimg ) ) {
-			?><input type="radio" name="updated_today_options[banner_image]" value="<?php echo $curimg; ?>" <?php if ( $current['banner_image'] == $curimg ) { ?>checked="checked"<?php } ?> />
+			?><input type="radio" name="updated_today_options[banner_image]" value="<?php echo $curimg; ?>" <?php if ( $banner_image == $curimg ) { ?>checked="checked"<?php } ?> />
 				<img src="<?php bloginfo( 'url' ); ?>/wp-content/plugins/updated-today-plugin/banners/<?php echo $curimg;?>" />
 				<br />
 				<?php echo $curimg; ?><?php if ( $curimg != 'updated.png'  && $curimg != 'updatedrt.png' ) { ?> - <a href="javascript:show_confirm('<?php echo get_bloginfo( 'url' ); ?>/wp-admin/options-general.php?page=updated-today-plugin&del_image=<?php echo $curimg; ?>');" href="">Delete Image</a><?php } ?>

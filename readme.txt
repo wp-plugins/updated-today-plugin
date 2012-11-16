@@ -1,7 +1,7 @@
 === Updated Today Banner === 
 Contributors: cklosows 
 Tags: css, posts, updates, banner
-Stable tag: 2.5.2
+Stable tag: 2.5.3
 Requires at least: 2.7.1
 Tested up to: 3.4.2
 Donate link: http://www.chriskdesigns.com/plugins/updated-today
@@ -17,6 +17,9 @@ Displays a banner graphic on your site whenever you publish or update a post or 
 If you have questions please leave them in the comments at the <a href="http://www.chriskdesigns.com/plugins/updated-today" target="_blank">plugin homepage</a>.
 
 == Changelog ==
+–Version 2.5.3–
+Fixing some Notices and other Code Cleanup
+
 –Version 2.5.2–
 Fixing some short tag issues.
 Adding in a constant for the Version number to add on the enqueue scripts/styles
