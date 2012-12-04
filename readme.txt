@@ -1,9 +1,9 @@
 === Updated Today Banner === 
 Contributors: cklosows 
 Tags: css, posts, updates, banner
-Stable tag: 2.5.3
+Stable tag: 2.6
 Requires at least: 2.7.1
-Tested up to: 3.4.2
+Tested up to: 3.5
 Donate link: http://www.chriskdesigns.com/plugins/updated-today
  
 Displays a banner graphic on your site whenever you publish or update a post or page on your blog.
@@ -14,9 +14,14 @@ Displays a banner graphic on your site whenever you publish or update a post or 
 3. Activate the plugin
 
 == Frequently Asked Questions ==
-If you have questions please leave them in the comments at the <a href="http://www.chriskdesigns.com/plugins/updated-today" target="_blank">plugin homepage</a>.
+If you have questions please leave them in the WordPress.org Forums.
 
 == Changelog ==
+–Version 2.6–
+Complete refactor into an OOP based plugin
+Static settings variable should help reduce database calls
+New uninstall cleanup method
+
 –Version 2.5.3–
 Fixing some Notices and other Code Cleanup
 
@@ -90,8 +95,7 @@ Possible issues:
 Not certain if every WordPress install uses the same field names for the post_date and same table names.
 
 == Description ==
-When people link into your site, the content may not be your most recent. The visitor may not realize that you are still active and publishing new content. With this plugin,
- visitors will see that you are active and writing new content.
+When people link into your site, the content may not be your most recent. The visitor may not realize that you are still active and publishing new content. With this plugin, visitors will see that you are active and writing new content.
 
 == Upgrade Notice ==
 If you are upgrading, you may need to go back into your settings and set them to your previous configuration.
