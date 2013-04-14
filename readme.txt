@@ -4,7 +4,7 @@ Tags: css, posts, updates, banner
 Stable tag: 2.6
 Requires at least: 2.7.1
 Tested up to: 3.5
-Donate link: http://www.chriskdesigns.com/plugins/updated-today
+Donate link: https://wp-push.com/donations/
  
 Displays a banner graphic on your site whenever you publish or update a post or page on your blog.
 
